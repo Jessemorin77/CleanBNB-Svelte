@@ -4,8 +4,12 @@
 declare namespace App {
   interface Locals {
     user: {
-      username: string;
+      email: string;
     };
+  }
+
+  interface Error {
+    message: string;
   }
 
   // interface Platform {}

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Navbar from "$lib/components/Navbar.svelte";
-
   import { beforeNavigate } from "$app/navigation";
   import { metadata } from "$lib/app/stores";
   import { site } from "$lib/config";
+  import Navbar from "$lib/components/Navbar.svelte";
+  import Main from "$lib/components/Main.svelte";
 
   export let data: App.PageData & Record<string, any>;
 
@@ -21,8 +21,9 @@
   <meta name="description" content={description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-6">
+<div class="min-h-full">
   <Navbar user={data.user} />
-
-  <slot />
+  <Main>
+    <slot />
+  </Main>
 </div>

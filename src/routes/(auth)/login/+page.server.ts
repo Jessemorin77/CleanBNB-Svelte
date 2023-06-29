@@ -13,28 +13,26 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 const login: Action = async ({ cookies, request }) => {
   const data = await request.formData();
-  const username = data.get("username");
+  const email = data.get("email");
   const password = data.get("password");
 
-  if (typeof username !== "string" || typeof password !== "string" || !username || !password) {
-    return fail(400, { invalid: true });
+  if (typeof email !== "string" || typeof password !== "string" || !email || !password) {
+    return fail(400, { error: { message: "email and password are required." } });
   }
 
-  const user = await db.user.findUnique({ where: { username } });
-
+  const user = await db.user.findUnique({ where: { email } });
   if (!user) {
-    return fail(400, { credentials: true });
+    return fail(400, { error: { message: "Email not found." } });
   }
 
   const userPassword = await bcrypt.compare(password, user.passwordHash);
-
   if (!userPassword) {
-    return fail(400, { credentials: true });
+    return fail(400, { error: { message: "Invalid credentials." } });
   }
 
   // generate new auth token just in case
   const authenticatedUser = await db.user.update({
-    where: { username: user.username },
+    where: { email: user.email },
     data: { userAuthToken: crypto.randomUUID() },
   });
 

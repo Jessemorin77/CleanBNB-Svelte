@@ -2,32 +2,81 @@
   import User from "carbon-icons-svelte/lib/User.svelte";
   import TextMiningApplier from "carbon-icons-svelte/lib/TextMiningApplier.svelte";
 
+  import { clickOutside } from "$lib/utils";
+  import { site } from "$lib/config";
+  import clsx from "clsx";
+  import Avatar from "./Avatar.svelte";
+  import { Hexagon } from "lucide-svelte";
+
   export let user: App.Locals["user"];
+  // Menu toggle action
+  let showMenu = false;
 </script>
 
-<nav aria-label="Site Nav" class="flex items-center justify-between py-8 ">
-  <a href="/" class="inline-flex items-center justify-center gap-3">
-    <span class="sr-only">Logo</span>
-    <TextMiningApplier size={20} class="text-cyan-700" />
-    <span class="text-lg font-semibold">Brand</span>
-  </a>
-
-  <ul class="flex items-center gap-2 text-sm text-gray-500">
-    <li>
-      <div class="inline-flex justify-center items-center gap-3 rounded-full bg-gray-100 px-4 py-1.5">
-        <User size={16} class="text-gray-700" />
-        <span class="">{user.username}</span>
+<nav class="fixed z-30 w-full border-b border-gray-200 bg-white">
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <div class="ml-2 flex items-center justify-start">
+        <a href="/" class="flex items-center space-x-2">
+          <Hexagon />
+          <span class="text-md self-center whitespace-nowrap font-semibold"> Flowbite </span>
+        </a>
       </div>
-    </li>
-    <li />
-    <li class="mr-2 text-gray-300">•</li>
-    <li>
-      <a
-        class="relative text-cyan-600 before:absolute before:-bottom-1 before:h-0.5 before:w-full before:origin-left before:scale-x-0 before:bg-cyan-600 before:transition hover:before:scale-100"
-        href="/logout"
-      >
-        Logout
-      </a>
-    </li>
-  </ul>
+      <div class="flex items-center">
+        <!-- Profile -->
+        <div class="relative ml-3 flex items-center">
+          <div>
+            <button
+              type="button"
+              class="flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300"
+              id="user-menu-button-2"
+              aria-expanded="false"
+              data-dropdown-toggle="dropdown-2"
+              use:clickOutside={() => {
+                showMenu = false;
+              }}
+              on:click={() => {
+                showMenu = !showMenu;
+              }}
+            >
+              <span class="sr-only">Open user menu</span>
+              <Avatar email={user.email} size={32} />
+            </button>
+          </div>
+          <!-- Dropdown menu -->
+          <div
+            class={clsx(
+              "fixed right-5 top-9 z-50 my-4 list-none divide-y divide-gray-100 rounded border bg-white text-base shadow-lg",
+              {
+                visible: showMenu,
+                invisible: !showMenu,
+              }
+            )}
+            id="dropdown-2"
+          >
+            <div class="px-4 py-3" role="none">
+              <!-- <p class="text-sm text-gray-900" role="none">
+                {user.email}
+              </p> -->
+              <p class="truncate text-sm font-medium text-gray-900" role="none">
+                {user.email}
+              </p>
+            </div>
+            <ul class="py-1" role="none">
+              <li>
+                <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                  >Settings</a
+                >
+              </li>
+              <li>
+                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                  >Log out</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>

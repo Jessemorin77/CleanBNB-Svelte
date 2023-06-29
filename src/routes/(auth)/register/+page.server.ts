@@ -13,24 +13,26 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 const register: Action = async ({ request }) => {
   const data = await request.formData();
-  const username = data.get("username");
+  const email = data.get("email");
   const password = data.get("password");
+  const passwordConfirmation = data.get("password-confirmation");
 
-  if (typeof username !== "string" || typeof password !== "string" || !username || !password) {
-    return fail(400, { invalid: true });
+  if (typeof email !== "string" || typeof password !== "string" || !email || !password) {
+    return fail(400, { error: { message: "email and password are required." } });
   }
 
-  const user = await db.user.findUnique({
-    where: { username },
-  });
+  if (password !== passwordConfirmation) {
+    return fail(400, { error: { message: "Password confirmation doesn't match." } });
+  }
 
+  const user = await db.user.findUnique({ where: { email } });
   if (user) {
-    return fail(400, { user: true });
+    return fail(400, { error: { message: "email already exists." } });
   }
 
   await db.user.create({
     data: {
-      username,
+      email,
       passwordHash: await bcrypt.hash(password, 10),
       userAuthToken: crypto.randomUUID(),
     },

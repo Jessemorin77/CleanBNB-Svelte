@@ -1,99 +1,80 @@
 <script lang="ts">
   import { applyAction, enhance } from "$app/forms";
   import { invalidateAll } from "$app/navigation";
-
+  import Alert from "$lib/components/Alert.svelte";
   import type { ActionData } from "./$types";
 
   export let form: ActionData;
 </script>
 
-<div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 pt-[10%]">
-  <div class="mx-auto max-w-lg text-center">
-    <h1 class="text-2xl font-bold sm:text-3xl">Login</h1>
-  </div>
+<div class="pt:mt-0 mx-auto flex flex-col items-center justify-center px-6 pb-24 md:h-screen">
+  <a href="/" class="mb-8 flex items-center justify-center text-2xl font-semibold lg:mb-10">
+    <!-- <img src="/images/logo.svg" class="mr-4 h-11" alt="FlowBite Logo" /> -->
+    <span>Flowbite</span>
+  </a>
+  <div class="w-full max-w-xl space-y-8 rounded-md border p-6 shadow sm:p-8">
+    <h2 class="text-2xl font-bold text-gray-900">Sign in to platform</h2>
 
-  <div class="mx-auto mt-12 mb-0 max-w-md">
-    {#if form?.invalid}
-      <div role="alert" class="rounded border border-red-200 bg-red-50 p-4">
-        <p class="text-sm text-red-700">Username and password is required.</p>
-      </div>
+    {#if form?.error?.message}
+      <Alert type="danger" description={form.error.message} />
     {/if}
 
-    {#if form?.credentials}
-      <div role="alert" class="rounded border border-red-200 bg-red-50 p-4">
-        <p class="text-sm text-red-700">Invalid credentials</p>
-      </div>
-    {/if}
-  </div>
+    <form
+      class="mt-8 space-y-6"
+      action="?/login"
+      method="POST"
+      use:enhance={() => {
+        return async ({ result }) => {
+          // rerun the `load` function for the page
+          // https://kit.svelte.dev/docs/modules#$app-navigation-invalidateall
+          invalidateAll();
 
-  <form
-    action="?/login"
-    method="POST"
-    class="mx-auto mt-8 mb-0 max-w-md space-y-4"
-    use:enhance={() => {
-      return async ({ result }) => {
-        // rerun the `load` function for the page
-        // https://kit.svelte.dev/docs/modules#$app-navigation-invalidateall
-        invalidateAll();
-
-        // since we're customizing the default behaviour
-        // we don't want to reimplement what `use:enhance` does
-        // so we can use `applyResult` and pass the `result`
-        await applyAction(result);
-      };
-    }}
-  >
-    <div>
-      <label for="username" class="sr-only">Username</label>
-
-      <div class="relative">
+          // since we're customizing the default behaviour
+          // we don't want to reimplement what `use:enhance` does
+          // so we can use `applyResult` and pass the `result`
+          await applyAction(result);
+        };
+      }}
+    >
+      <div>
+        <label for="email" class="mb-2 block text-sm font-medium text-gray-900"> Email </label>
         <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
           required
-          type="text"
-          name="username"
-          id="username"
-          class="w-full rounded-lg border-gray-300 p-4 pr-12 text-sm"
-          placeholder="Enter username"
+          class="block w-full rounded-md border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
         />
       </div>
-    </div>
 
-    <div>
-      <label for="password" class="sr-only">Password</label>
-      <div class="relative">
+      <div>
+        <label for="password" class="mb-2 block text-sm font-medium text-gray-900">Password</label>
         <input
-          required
-          type="password"
           id="password"
           name="password"
-          class="w-full rounded-lg border-gray-300 p-4 pr-12 text-sm"
-          placeholder="Enter password"
+          type="password"
+          autocomplete="current-password"
+          required
+          class="block w-full rounded-md border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
         />
       </div>
-    </div>
 
-    <div class="flex items-center justify-between">
-      <p class="text-sm text-gray-500">
-        No account?
-        <a class="underline" href="/register">Sign up</a>
-      </p>
+      <div class="flex items-start">
+        <a href="/forgot-password" class="ml-auto text-sm text-primary-700 hover:underline"> Forgot Password? </a>
+      </div>
 
       <button
         type="submit"
-        class="inline-flex items-center rounded border border-cyan-600 bg-cyan-600 px-6 py-3 text-white focus:outline-none "
+        class="w-full rounded-md bg-primary-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto"
       >
-        <span class="text-sm font-medium"> Log In </span>
-
-        <svg
-          class="ml-3 h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
+        Login to your account
       </button>
-    </div>
-  </form>
+
+      <div class="text-sm font-medium text-gray-500">
+        Don't have an account?
+        <a href="/register" class="text-primary-700 hover:underline"> Create account </a>
+      </div>
+    </form>
+  </div>
 </div>
