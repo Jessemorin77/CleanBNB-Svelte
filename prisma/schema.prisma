@@ -3,17 +3,106 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+    provider = "sqlite"
+    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+    // Further reading:
+    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String @id @default(uuid())
-  email         String @unique
+  id            String   @id @default(uuid())
+  email         String   @unique
   passwordHash  String
-  userAuthToken String @unique
+  userAuthToken String   @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  sentMessages   Message[] @relation("SentMessage")
+  receivedMessages Message[] @relation("ReceivedMessage")
+  rooms          Room[]    @relation("UserRoom")
+}
+
+model Room {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  users     User[]    @relation("UserRoom")
+  messages  Message[]
+}
+
+model Message {
+  id         Int       @id @default(autoincrement())
+  content    String
+  sentAt     DateTime  @default(now())
+
+  // Specify the fields and references here, not in the User model
+  sender     User      @relation("SentMessage", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User?     @relation("ReceivedMessage", fields: [receiverId], references: [id])
+  receiverId String?
+  room       Room      @relation(fields: [roomId], references: [id])
+  roomId     Int
+}
+
+model Property {
+  id      String   @id @default(cuid())
+  Address String
+  City    String?
+  State   String?
+  Zip     Int?
+  Beds    Int?
+  Baths   Int?
+  Sqft    Int?
+  Type    String?
+  Status  String?
+  Image   String?
+  Desc    String?
+  listings Listing[]
+}
+
+model Listing {
+  id             String   @id @default(cuid())
+  propertyId     String
+  property       Property @relation(fields: [propertyId], references: [id])
+  jobType        String
+  contractorType String
+  readyToHire    Boolean
+  startDate      DateTime
+  endDate        DateTime
+  title          String
+  description    String
+  budget         Int
+  bids           Bid[]
+  jobs           Job[]
+}
+
+
+model Bid {
+  id         String   @id @default(cuid())
+  userId     String   // Foreign key referencing UserProfile discordId
+  listingId  String
+  listing    Listing? @relation(fields: [listingId], references: [id])
+  bidAmount  Int?
+  bidMessage String?
+  bidStatus  String?
+  bidDate    DateTime @default(now())
+  job        Job[]
+}
+
+model Job {
+  id        String   @id @default(cuid())
+  userId    String   // Foreign key referencing UserProfile discordId
+  contractorId String 
+  listingId String
+  listing   Listing? @relation(fields: [listingId], references: [id])
+  bidId     String
+  bid       Bid?     @relation(fields: [bidId], references: [id])
+  jobAmount Int?
+  jobStatus String?
+  jobDate   DateTime @default(now())
 }

@@ -36,6 +36,14 @@ const login: Action = async ({ cookies, request }) => {
     data: { userAuthToken: crypto.randomUUID() },
   });
 
+  cookies.set("userId", authenticatedUser.id, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 30,
+  })
+
   cookies.set("session", authenticatedUser.userAuthToken, {
     // send cookie for every page
     path: "/",

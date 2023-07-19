@@ -22,6 +22,24 @@
           <span class="text-md self-center whitespace-nowrap font-semibold"> Flowbite </span>
         </a>
       </div>
+      <div>
+        <a href="/properties">
+          Properties
+        </a>
+        <a href="/listings">
+          Listings
+        </a>
+        <a href="/bids">
+          Bids
+        </a>
+        <a href="/chat">Chat</a>
+        <a href="/schedule">
+         Schedule 
+        </a>
+        <a href="/payments">
+          Payments
+        </a>
+      </div>
       <div class="flex items-center">
         <!-- Profile -->
         <div class="relative ml-3 flex items-center">
