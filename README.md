@@ -22,3 +22,4 @@ cp .env.example .env
    npx prisma db push
    ```
 # CleanBNB-Svelte
+# CleanBNB-Svelte
