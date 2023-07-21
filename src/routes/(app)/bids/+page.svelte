@@ -8,7 +8,7 @@
 <h>bids</h>
 {#each bids as bid}
     <div>
-        <p>Ammount: {bid.bidAmmount}</p>
+        <p>Ammount: {bid.bidAmount}</p>
         <p>Message: {bid.bidMessage}</p>
         <p>Status: {bid.bidStatus}</p>
         <form action="?/acceptBid&id={bid.id}" method="POST">
