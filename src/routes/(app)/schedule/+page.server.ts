@@ -17,39 +17,3 @@ export const load: PageServerLoad = async ({ request, locals }) => {
   };
 } 
 
-export const actions: Actions = {
-  createPayment: async ({ request, locals, url }) => {
-    const userId = locals.user.id;
-    const  jobId  = url.searchParams.get("jobId");
-
-    const job = await prisma.job.findUnique({
-      where: {
-        id: String(jobId),
-      },
-    });
-
-    const jobPrice = job?.jobAmount;
-
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            unit_amount: Number(jobPrice) * 100,
-            product_data: {
-              name: "Service",
-            },
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/",
-    });
-
-  return {
-    sessionId: session.id ,
-  };
-  },
-}

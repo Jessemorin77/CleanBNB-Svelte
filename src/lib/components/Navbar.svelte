@@ -36,9 +36,7 @@
         <a href="/schedule">
          Schedule 
         </a>
-        <a href="/payments">
-          Payments
-        </a>
+        
       </div>
       <div class="flex items-center">
         <!-- Profile -->
