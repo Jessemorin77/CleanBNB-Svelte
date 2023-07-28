@@ -20,6 +20,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  bids       Bid[]
+
   sentMessages   Message[] @relation("SentMessage")
   receivedMessages Message[] @relation("ReceivedMessage")
   rooms          Room[]    @relation("UserRoom")
@@ -84,7 +86,8 @@ model Listing {
 
 model Bid {
   id         String   @id @default(cuid())
-  userId     String   // Foreign key referencing UserProfile discordId
+  userId     String
+  user       User? @relation(fields: [userId], references: [id])// Foreign key referencing UserProfile discordId
   listingId  String
   listing    Listing? @relation(fields: [listingId], references: [id])
   bidAmount  Int?

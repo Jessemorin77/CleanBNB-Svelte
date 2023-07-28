@@ -13,27 +13,27 @@
   let showMenu = false;
 </script>
 
-<nav class="fixed z-30 w-full border-b border-gray-200 bg-white">
+<nav class="fixed z-30 w-full border-b border-gray-200 bg-gray-800">
   <div class="px-3 py-3 lg:px-5 lg:pl-3">
     <div class="flex items-center justify-between">
       <div class="ml-2 flex items-center justify-start">
         <a href="/" class="flex items-center space-x-2">
-          <Hexagon />
-          <span class="text-md self-center whitespace-nowrap font-semibold"> Flowbite </span>
+          <img src="/Screenshot from 2023-07-27 14-47-24.png" alt="logo" class="w-30 h-10"/>
+          <span class="text-md self-center whitespace-nowrap font-semibold">  </span>
         </a>
       </div>
-      <div>
-        <a href="/properties">
+      <div class="mx-auto block px-10">
+        <a href="/properties" class="px-6 text-white">
           Properties
         </a>
-        <a href="/listings">
+        <a href="/listings" class="px-6 text-white">
           Listings
         </a>
-        <a href="/bids">
+        <a href="/bids" class="px-6 text-white">
           Bids
         </a>
-        <a href="/chat">Chat</a>
-        <a href="/schedule">
+        <a href="/chat" class="px-6 text-white" >Chat</a>
+        <a href="/schedule" class="px-6 text-white">
          Schedule 
         </a>
         

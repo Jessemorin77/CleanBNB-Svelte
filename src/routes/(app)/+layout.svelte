@@ -21,7 +21,7 @@
   <meta name="description" content={description} />
 </svelte:head>
 
-<div class="min-h-full">
+<div class="min-h-full bg-gray-900">
   <Navbar user={data.user} />
   <Main>
     <slot />
