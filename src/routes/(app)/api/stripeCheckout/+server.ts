@@ -41,6 +41,15 @@ export async function POST({request, locals, url}: RequestEvent) {
         success_url: "http://localhost:3001/success",
         cancel_url: "http://localhost:3001/",
       });
+
+      const update = await prisma.job.update({
+        where: {
+          id: String(jobId)
+        },
+        data: {
+          jobStatus: "Payed"
+        }
+      })
     
       return json({url: session.url}, {status: 201}) 
 }

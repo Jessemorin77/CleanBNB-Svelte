@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
     });
 
     return {
-        messages,
+        messages, 
     };
 };
 
