@@ -3,7 +3,7 @@
   import type { PageData } from "./$types";
   export let data: PageData;
 
-  $: ({ properties } = data);
+  $: ({ properties, listings, bids } = data);
 </script>
 
 <div class="bg-gray-900 min-h-screen flex flex-col justify-center items-center py-8">
@@ -20,7 +20,49 @@
     </div>
   {/each}
 
-  <a href="/properties/addProperty">Add Property</a>
+  <a href="/properties/addProperty" class="text-white">Add Property</a>
   
+</div>
+
+<div class="flex-col justify-center items-center">
+  <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 text-center">
+    Listings
+  </h1>
+  
+  {#each listings as listing}
+    <div class="bg-gray-800 rounded-lg p-6 mb-4 w-80 text-white">
+      <p>Title: {listing.title}</p>
+      <p>Budget: {listing.budget}</p>
+      <p>Description: {listing.description}</p>
+      <p>Start Date: {listing.startDate}</p>
+      <p>End Date: {listing.endDate}</p>
+      <p>Ready to Hire: {listing.readyToHire}</p>
+      <p>Job Type: {listing.jobType}</p>
+    </div>
+  {/each}
+
+  <a href="/listings/addListing" class="text-white">Add Listing</a>
+</div>
+<div>
+  
+  <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 text-center">
+    Bids
+  </h1>
+
+  {#each bids as bid}
+    <div class="bg-gray-800 rounded-lg p-6 mb-4 w-80 text-white">
+      <p>Amount: {bid.bidAmount}</p>
+      <p>Message: {bid.bidMessage}</p>
+      <p>Status: {bid.bidStatus}</p>
+      <div class="flex justify-center mt-4">
+        <form action="?/acceptBid&id={bid.id}" method="POST">
+          <button type="submit" class="btn btn-green mr-2">Accept</button>
+        </form>
+        <form action="?/declineBid&id={bid.id}" method="POST">
+          <button type="submit" class="btn btn-red">Decline</button>
+        </form>
+      </div>
+    </div>
+  {/each}
 </div>
 

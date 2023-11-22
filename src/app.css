@@ -1,10 +1,13 @@
-/* Write your global styles here, in PostCSS syntax */
+/* app.css */
+
+/* Include Tailwind CSS base, components, and utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: "Inter", system-ui, sans-serif;
-  }
+/* Define the global font-family */
+html {
+  font-family: 'Railway', sans-serif; /* Use 'Railway' as the default font */
 }
+
+/* You can add more styles here */
