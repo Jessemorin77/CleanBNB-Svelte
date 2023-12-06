@@ -1,9 +1,9 @@
-# Sveltekit, Tailwind CSS & Prisma Starter
+# Property Automation Application
 
-## Install
+## Get running
 
 ```sh
-git clone https://github.com/zianwar/sveltekit-tailwindcss-prisma-starter myapp
+git clone 
 
 cd myapp
 npm i
